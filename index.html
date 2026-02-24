@@ -268,15 +268,24 @@
       bottom: 8%; right: 10%;
       width: 560px; height: 560px;
       border-radius: 50%;
-      border: 1px solid rgba(201, 164, 83, 0.349);
+      border: 1px dashed rgba(201, 164, 83, 0.349);
       pointer-events: none;
+      animation: ringRotate 60s linear infinite;
     }
+
     .deco-ring::before {
       content: '';
       position: absolute;
       inset: 20px;
       border-radius: 50%;
       border: 1px dashed rgba(201, 164, 83, 0.349);
+      pointer-events: none;
+      animation: ringRotate 35s linear reverse infinite;
+    }
+
+    @keyframes ringRotate {
+      from { transform: rotate(0); }
+      to   { transform: rotate(360deg); }
     }
 
     .red-stripe {
