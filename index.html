@@ -9,10 +9,10 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy-deep:    #070e1f;
-      --navy-mid:     #0d1c38;
-      --navy-light:   #162a52;
-      --navy-soft:    #1e3a6e;
+      --navy-deep:    #1f0707;
+      --navy-mid:     #380d0d;
+      --navy-light:   #521616;
+      --navy-soft:    #6e1e1e;
       --gold:         #c9a453;
       --gold-light:   #e8c97a;
       --gold-pale:    #f5e6b8;
@@ -20,7 +20,7 @@
       --white-dim:    rgba(242,244,248,0.7);
       --white-faint:  rgba(242,244,248,0.12);
       --red-accent:   #b02030;
-      --input-bg:     rgba(13,28,56,0.7);
+      --input-bg:     rgba(56, 13, 13, 0.7);
       --border:       rgba(201,164,83,0.35);
     }
 
@@ -48,9 +48,9 @@
       position: relative;
       z-index: 2;
       background: linear-gradient(135deg,
-        rgba(7,14,31,0.97) 0%,
-        rgba(13,28,56,0.93) 60%,
-        rgba(22,42,82,0.85) 100%);
+        rgba(31, 7, 7, 0.97) 0%,
+        rgba(56, 13, 13, 0.93) 60%,
+        rgba(82, 22, 22, 0.85) 100%);
       border-right: 1px solid var(--border);
     }
 
@@ -238,9 +238,9 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 70% 60% at 70% 40%, rgba(22,42,82,0.9) 0%, transparent 70%),
-        radial-gradient(ellipse 80% 80% at 50% 100%, rgba(7,14,31,0.95) 0%, transparent 60%),
-        linear-gradient(160deg, #0d1c38 0%, #07122a 40%, #0a0f1e 100%);
+        radial-gradient(ellipse 70% 60% at 70% 40%, rgba(82, 22, 22, 0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 80% at 50% 100%, rgba(31, 7, 7, 0.95) 0%, transparent 60%),
+        linear-gradient(160deg, #380d0d 0%, #2a0707 40%, #1e0a0a 100%);
     }
 
     .right-bg::before {
@@ -265,10 +265,10 @@
 
     .deco-ring {
       position: absolute;
-      bottom: 8%; right: 12%;
-      width: 380px; height: 380px;
+      bottom: 8%; right: 10%;
+      width: 560px; height: 560px;
       border-radius: 50%;
-      border: 1px solid rgba(201,164,83,0.12);
+      border: 1px solid rgba(201, 164, 83, 0.349);
       pointer-events: none;
     }
     .deco-ring::before {
@@ -276,7 +276,7 @@
       position: absolute;
       inset: 20px;
       border-radius: 50%;
-      border: 1px dashed rgba(201,164,83,0.08);
+      border: 1px dashed rgba(201, 164, 83, 0.349);
     }
 
     .red-stripe {
@@ -291,10 +291,10 @@
       position: absolute;
       bottom: 0;
       right: 4%;
-      height: 96%;
+      height: 93%;
       object-fit: contain;
       object-position: bottom center;
-      filter: drop-shadow(-8px 0 30px rgba(13,28,56,0.7));
+      filter: drop-shadow(-8px 0 30px rgba(56, 13, 13, 0.7));
       animation: charIn 0.9s cubic-bezier(.22,.68,0,1.2) 0.2s both;
     }
 
@@ -376,7 +376,7 @@
 
       <img
         class="character"
-        src="./anime-pict.png"
+        src="./kaishi_pict.png"
         alt="Anime character"
       />
     </div>
