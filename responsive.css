@@ -1,0 +1,362 @@
+/* TABLET LANDSCAPE + SMALL LAPTOP  (1024px – 1279px) */
+@media (max-width: 1279px) {
+  .left {
+    width: 46%;
+    padding: 52px 44px;
+  }
+
+  .character {
+    height: 88%;
+    right: 2%;
+  }
+
+  .ring-1 { width: 400px; height: 400px; }
+  .ring-2 { width: 280px; height: 280px; }
+  .ring-3 { width: 160px; height: 160px; }
+}
+
+
+/* TABLET PORTRAIT  (768px – 1023px) */
+@media (max-width: 1023px) {
+  html, body { overflow: auto; }
+
+  .page {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  /* Character panel becomes a decorative header banner */
+  .right {
+    width: 100%;
+    height: 280px;
+    order: -1;
+    flex-shrink: 0;
+  }
+
+  .character {
+    height: 100%;
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 0;
+    object-position: top center;
+  }
+  @keyframes charIn {
+    from { opacity: 0; transform: translateX(50%) scale(0.96); }
+    to   { opacity: 1; transform: translateX(50%) scale(1); }
+  }
+
+  .badge   { top: 16px; left: 20px; font-size: 0.65rem; }
+  .caption { bottom: 12px; left: 20px; font-size: 0.65rem; }
+  .compass { top: 16px; right: 16px; width: 50px; height: 50px; }
+
+  .ring-1 { width: 260px; height: 260px; bottom: -10%; right: 40%; }
+  .ring-2 { width: 180px; height: 180px; bottom: -5%;  right: 44%; }
+  .ring-3 { display: none; }
+
+  /* Form panel */
+  .left {
+    width: 100%;
+    min-width: unset;
+    padding: 48px 40px 60px;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg,
+      rgba(31,7,7,0.98) 0%,
+      rgba(46,10,10,0.96) 100%);
+  }
+
+  .left::before { width: 80px; height: 80px; }
+  .left::after  { width: 60px; height: 60px; }
+
+  .logo {
+    position: static;
+    display: block;
+    text-align: center;
+    margin-bottom: 28px;
+    font-size: 1.3rem;
+  }
+
+  .skull-deco { display: none; }
+
+  .form-wrap { max-width: 480px; }
+
+  .heading    { font-size: 1.8rem; }
+  .heading-sub{ font-size: 0.8rem; }
+  .subtext    { font-size: 0.88rem; margin-bottom: 24px; }
+
+  .topbar-right {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(26,5,5,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    text-align: right;
+    z-index: 100;
+    font-size: 0.82rem;
+  }
+  .topbar-right a {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+  }
+}
+
+
+/* LARGE PHONES  (480px – 767px) */
+@media (max-width: 767px) {
+  .right { height: 220px; }
+
+  .character { height: 95%; }
+
+  .left { padding: 36px 28px 52px; }
+
+  .logo { font-size: 1.15rem; margin-bottom: 24px; }
+
+  .heading     { font-size: 1.55rem; }
+  .heading-sub { font-size: 0.75rem; }
+  .subtext     { font-size: 0.83rem; margin-bottom: 20px; }
+
+  .btn-google {
+    font-size: 0.78rem;
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  .divider { font-size: 0.75rem; margin-bottom: 16px; }
+
+  .field { margin-bottom: 10px; }
+  .field input {
+    padding: 10px 14px 10px 36px;
+    font-size: 0.92rem;
+  }
+  .field .field-icon { font-size: 0.85rem; left: 10px; }
+
+  .btn-submit {
+    padding: 11px;
+    font-size: 0.8rem;
+    margin-top: 6px;
+  }
+
+  /* Modal */
+  .modal {
+    margin: 16px;
+    padding: 36px 28px;
+  }
+  .modal h2 { font-size: 1.3rem; }
+
+  /* Toast */
+  .toast {
+    font-size: 0.75rem;
+    padding: 10px 20px;
+    max-width: 90vw;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+
+/* 
+   STANDARD SMALL PHONES  (360px – 479px)
+   iPhone SE 2nd/3rd, Galaxy S, Pixel 4a
+ */
+@media (max-width: 479px) {
+  .right { height: 190px; }
+
+  .left { padding: 28px 20px 48px; }
+
+  .logo { font-size: 1.05rem; letter-spacing: 0.14em; }
+
+  .form-wrap { max-width: 100%; }
+
+  .heading     { font-size: 1.35rem; letter-spacing: 0.04em; }
+  .heading-sub { font-size: 0.7rem; margin-bottom: 6px; }
+  .subtext     { font-size: 0.8rem; margin-bottom: 18px; }
+
+  .btn-google {
+    font-size: 0.73rem;
+    padding: 9px 14px;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+  .btn-google svg { width: 16px; height: 16px; }
+
+  .divider { font-size: 0.7rem; margin-bottom: 14px; gap: 8px; }
+
+  .field { margin-bottom: 9px; }
+  .field input {
+    padding: 9px 12px 9px 34px;
+    font-size: 0.88rem;
+  }
+  .field .err-msg   { font-size: 0.68rem; }
+  .strength-label   { font-size: 0.65rem; }
+
+  .btn-submit {
+    padding: 10px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .topbar-right {
+    font-size: 0.75rem;
+    padding: 10px 16px;
+  }
+  .topbar-right a {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    margin-left: 6px;
+  }
+
+  /* Reduce modal padding */
+  .modal { padding: 32px 20px; }
+  .modal h2 { font-size: 1.2rem; }
+  .modal .modal-sub { font-size: 0.78rem; }
+
+  /* Rings scaled down */
+  .ring-1 { width: 180px; height: 180px; }
+  .ring-2 { width: 120px; height: 120px; }
+
+  /* Badge & caption on right panel */
+  .badge   { font-size: 0.58rem; top: 12px; left: 12px; }
+  .caption { font-size: 0.58rem; bottom: 8px; left: 12px; letter-spacing: 0.12em; }
+  .compass { width: 38px; height: 38px; top: 12px; right: 12px; }
+}
+
+
+/* 
+   TINY PHONES  (< 360px)
+   iPhone SE 1st gen, Galaxy A03 core, older budget phones
+ */
+@media (max-width: 359px) {
+  .right { height: 160px; }
+
+  .left { padding: 24px 16px 44px; }
+
+  .logo { font-size: 0.95rem; }
+
+  .heading     { font-size: 1.2rem; }
+  .heading-sub { font-size: 0.65rem; }
+  .subtext     { font-size: 0.76rem; margin-bottom: 14px; }
+
+  .btn-google {
+    font-size: 0.68rem;
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .divider { font-size: 0.65rem; margin-bottom: 12px; }
+
+  .field input { padding: 8px 10px 8px 30px; font-size: 0.84rem; }
+  .field .field-icon { font-size: 0.75rem; left: 8px; }
+
+  .btn-submit { font-size: 0.7rem; padding: 9px; letter-spacing: 0.08em; }
+
+  .topbar-right {
+    font-size: 0.68rem;
+    padding: 9px 12px;
+  }
+  .topbar-right a {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .modal { padding: 28px 16px; }
+  .modal h2 { font-size: 1.1rem; }
+
+  .ring-1 { display: none; }
+  .ring-2 { width: 100px; height: 100px; }
+
+  .badge   { display: none; }
+  .caption { display: none; }
+}
+
+
+/* LANDSCAPE ORIENTATION  (phones rotated) */
+@media (max-width: 900px) and (orientation: landscape) {
+  html, body { overflow: auto; }
+
+  .page {
+    flex-direction: row;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .right {
+    order: 1;
+    width: 40%;
+    height: auto;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .character {
+    height: 100%;
+    right: 0;
+    transform: none;
+  }
+  @keyframes charIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .left {
+    width: 60%;
+    min-width: unset;
+    border-right: 1px solid var(--border);
+    border-top: none;
+    padding: 56px 32px 40px;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .logo {
+    position: absolute;
+    top: 20px; left: 28px;
+    display: block;
+    text-align: left;
+    margin-bottom: 0;
+  }
+
+  .form-wrap { max-width: 380px; margin-top: 20px; }
+
+  .heading     { font-size: 1.4rem; }
+  .heading-sub { font-size: 0.72rem; }
+
+  .field       { margin-bottom: 8px; }
+  .field input { padding: 9px 12px 9px 34px; }
+
+  .btn-submit  { padding: 10px; }
+
+  .topbar-right {
+    position: fixed;
+    background: rgba(26,5,5,0.92);
+    backdrop-filter: blur(6px);
+  }
+}
+
+
+/* HIGH-DPI / RETINA — crisp hairlines */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .left::before,
+  .left::after { opacity: 0.5; }
+
+  .ring-1,
+  .ring-2,
+  .ring-3 { border-width: 0.5px; }
+}
+
+
+/* REDUCED MOTION — respect user accessibility preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.1ms !important;
+  }
+
+  .particle { display: none; }
+}
