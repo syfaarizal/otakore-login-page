@@ -4,722 +4,124 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Otakore — Join the Crew</title>
+  <link rel="stylesheet" href="./style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --deep:       #1a0505;
-      --mid:        #2e0a0a;
-      --light:      #521616;
-      --soft:       #6e1e1e;
-      --gold:       #c9a453;
-      --gold-light: #e8c97a;
-      --gold-pale:  #f5e6b8;
-      --white:      #f2f4f8;
-      --white-dim:  rgba(242,244,248,0.7);
-      --red:        #b02030;
-      --red-bright: #e03040;
-      --input-bg:   rgba(46,10,10,0.75);
-      --border:     rgba(201,164,83,0.35);
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'Crimson Pro', Georgia, serif;
-      background: var(--deep);
-      color: var(--white);
-      overflow: hidden;
-    }
-
-    .page { display:flex; height:100vh; position:relative; }
-
-    .toast {
-      position: fixed;
-      top: 24px; left: 50%; transform: translateX(-50%) translateY(-80px);
-      background: linear-gradient(135deg, var(--mid), var(--light));
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      padding: 12px 28px;
-      font-family: 'Cinzel', serif;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      color: var(--gold-light);
-      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-      z-index: 1000;
-      transition: transform 0.4s cubic-bezier(.22,.68,0,1.2), opacity 0.4s;
-      opacity: 0;
-      white-space: nowrap;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .toast.error { border-color: var(--red-bright); color: #ff8080; }
-    .toast.success { border-color: #4caf90; color: #7de8c0; }
-
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(10,3,3,0.85);
-      backdrop-filter: blur(6px);
-      z-index: 500;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal {
-      background: linear-gradient(135deg, var(--mid) 0%, var(--deep) 100%);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 48px 44px;
-      width: 100%; max-width: 380px;
-      position: relative;
-      transform: scale(0.9) translateY(20px);
-      transition: transform 0.35s cubic-bezier(.22,.68,0,1.2);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,164,83,0.1);
-    }
-    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
-    .modal::before {
-      content:''; position:absolute; top:0;left:0;
-      width:80px;height:80px;
-      border-top:2px solid var(--gold); border-left:2px solid var(--gold);
-      opacity:0.4; border-radius:2px 0 0 0;
-    }
-    .modal::after {
-      content:''; position:absolute; bottom:0;right:0;
-      width:60px;height:60px;
-      border-bottom:2px solid var(--gold); border-right:2px solid var(--gold);
-      opacity:0.3; border-radius:0 0 2px 0;
-    }
-    .modal-close {
-      position:absolute; top:16px; right:20px;
-      background:none; border:none; color:var(--gold);
-      font-size:1.4rem; cursor:pointer; opacity:0.6;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .modal-close:hover { opacity:1; transform:rotate(90deg); }
-    .modal h2 {
-      font-family:'Cinzel',serif;
-      font-size:1.5rem; font-weight:600;
-      color:var(--gold-light);
-      text-align:center; margin-bottom:6px;
-    }
-    .modal .modal-sub {
-      font-size:0.83rem; color:var(--white-dim);
-      text-align:center; margin-bottom:28px; line-height:1.5;
-    }
-    .modal .modal-sub a { color:var(--gold); text-decoration:none; }
-
-    .left {
-      width: 42%; min-width: 360px;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 60px 56px;
-      position: relative; z-index: 2;
-      background: linear-gradient(135deg,
-        rgba(26,5,5,0.97) 0%,
-        rgba(46,10,10,0.93) 60%,
-        rgba(82,22,22,0.85) 100%);
-      border-right: 1px solid var(--border);
-    }
-    .left::before {
-      content:''; position:absolute; top:0;left:0;
-      width:120px;height:120px;
-      border-top:2px solid var(--gold); border-left:2px solid var(--gold);
-      opacity:0.4; pointer-events:none;
-    }
-    .left::after {
-      content:''; position:absolute; bottom:0;right:0;
-      width:80px;height:80px;
-      border-bottom:2px solid var(--gold); border-right:2px solid var(--gold);
-      opacity:0.3; pointer-events:none;
-    }
-
-    .logo {
-      position:absolute; top:28px;left:40px;
-      font-family:'Cinzel',serif; font-size:1.15rem; font-weight:400;
-      letter-spacing:0.18em; color:var(--gold-light); text-transform:uppercase;
-      cursor:pointer;
-    }
-    .logo span { color:var(--gold); font-weight:700; }
-
-    .form-wrap {
-      width:100%; max-width:340px; margin:0 auto;
-      animation: fadeUp 0.7s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(22px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    .heading {
-      font-family:'Cinzel',serif; font-size:1.55rem; font-weight:600;
-      color:var(--gold-light); letter-spacing:0.06em;
-      margin-bottom:4px; text-align:center;
-    }
-    .heading-sub {
-      font-size:0.78rem; color:var(--red-bright);
-      text-align:center; margin-bottom:4px;
-      font-family:'Cinzel',serif; letter-spacing:0.12em;
-      text-transform:uppercase; opacity:0.8;
-    }
-    .subtext {
-      font-size:0.83rem; color:var(--white-dim);
-      text-align:center; margin-bottom:26px; line-height:1.5;
-    }
-    .subtext a { color:var(--gold); text-decoration:none; }
-    .subtext a:hover { text-decoration:underline; }
-
-    .btn-google {
-      display:flex; align-items:center; justify-content:center;
-      gap:10px; width:100%; padding:11px 20px;
-      background:rgba(201,164,83,0.1);
-      border:1px solid var(--gold); border-radius:4px;
-      color:var(--gold-light); font-family:'Cinzel',serif;
-      font-size:0.8rem; letter-spacing:0.1em;
-      cursor:pointer; transition:background 0.2s, box-shadow 0.2s, transform 0.15s;
-      margin-bottom:20px;
-    }
-    .btn-google:hover {
-      background:rgba(201,164,83,0.2);
-      box-shadow:0 0 18px rgba(201,164,83,0.22);
-      transform:translateY(-1px);
-    }
-    .btn-google:active { transform:translateY(0); }
-    .btn-google svg { width:18px; height:18px; flex-shrink:0; }
-
-    .divider {
-      display:flex; align-items:center; gap:12px;
-      margin-bottom:18px; color:var(--white-dim);
-      font-size:0.78rem; letter-spacing:0.1em;
-    }
-    .divider::before,.divider::after {
-      content:''; flex:1; height:1px; background:var(--border);
-    }
-
-    .field { position:relative; margin-bottom:11px; }
-    .field .field-icon {
-      position:absolute; left:12px; top:50%; transform:translateY(-50%);
-      font-size:0.9rem; opacity:0.4; pointer-events:none;
-    }
-    .field input {
-      width:100%; padding:11px 16px 11px 38px;
-      background:var(--input-bg);
-      border:1px solid var(--border); border-radius:4px;
-      color:var(--white); font-family:'Crimson Pro',serif;
-      font-size:0.95rem; outline:none;
-      transition:border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    }
-    .field input::placeholder { color:rgba(242,244,248,0.3); font-style:italic; }
-    .field input:focus {
-      border-color:var(--gold);
-      box-shadow:0 0 14px rgba(201,164,83,0.18);
-      background:rgba(82,22,22,0.5);
-    }
-    .field .err-msg {
-      font-size:0.72rem; color:#ff7070;
-      margin-top:4px; padding-left:4px;
-      display:none; font-style:italic;
-    }
-    .field.has-error input { border-color:#c0404088; }
-    .field.has-error .err-msg { display:block; }
-    .field.valid input { border-color:rgba(76,175,144,0.5); }
-
-    .strength-wrap { margin-top:5px; display:none; }
-    .field.show-strength .strength-wrap { display:block; }
-    .strength-bar {
-      height:3px; border-radius:2px;
-      background:rgba(255,255,255,0.1);
-      overflow:hidden; margin-bottom:3px;
-    }
-    .strength-bar-fill {
-      height:100%; width:0%;
-      background:var(--red-bright);
-      transition:width 0.3s, background 0.3s;
-    }
-    .strength-label { font-size:0.68rem; color:var(--white-dim); font-style:italic; }
-
-    .btn-submit {
-      width:100%; padding:12px; margin-top:6px;
-      background:linear-gradient(135deg, var(--gold) 0%, #8a5820 100%);
-      border:none; border-radius:4px;
-      color:var(--deep); font-family:'Cinzel',serif;
-      font-size:0.85rem; font-weight:700; letter-spacing:0.15em;
-      cursor:pointer; text-transform:uppercase;
-      transition:opacity 0.2s, box-shadow 0.2s, transform 0.15s;
-      position:relative; overflow:hidden;
-    }
-    .btn-submit::before {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,transparent 60%);
-      pointer-events:none;
-    }
-    .btn-submit:hover {
-      opacity:0.92; transform:translateY(-2px);
-      box-shadow:0 6px 24px rgba(201,164,83,0.45);
-    }
-    .btn-submit:active { transform:translateY(0); }
-    .btn-submit.loading { pointer-events:none; opacity:0.7; }
-    .btn-submit .spinner {
-      display:none; width:16px; height:16px;
-      border:2px solid rgba(26,5,5,0.3);
-      border-top-color:var(--deep);
-      border-radius:50%;
-      animation:spin 0.7s linear infinite;
-      margin:0 auto;
-    }
-    .btn-submit.loading .btn-text { display:none; }
-    .btn-submit.loading .spinner { display:block; }
-    @keyframes spin { to { transform:rotate(360deg); } }
-
-    .topbar-right {
-      position:absolute; top:28px; right:40px;
-      font-size:0.92rem; color:var(--white-dim); z-index:10;
-    }
-    .topbar-right a {
-      color:var(--gold-light); font-family:'Cinzel',serif;
-      font-weight:600; font-size:0.82rem;
-      letter-spacing:0.1em; text-decoration:none;
-      padding:6px 14px; border:1px solid var(--border);
-      border-radius:3px; margin-left:8px;
-      transition:background 0.2s, border-color 0.2s, box-shadow 0.2s;
-      display:inline-block;
-    }
-    .topbar-right a:hover {
-      background:rgba(201,164,83,0.12);
-      border-color:var(--gold);
-      box-shadow:0 0 12px rgba(201,164,83,0.15);
-    }
-
-    .right { flex:1; position:relative; overflow:hidden; }
-
-    .right-bg {
-      position:absolute; inset:0;
-      background:
-        radial-gradient(ellipse 70% 60% at 70% 40%, rgba(82,22,22,0.88) 0%,transparent 70%),
-        radial-gradient(ellipse 80% 80% at 50% 100%, rgba(26,5,5,0.95) 0%,transparent 60%),
-        linear-gradient(160deg,#2e0a0a 0%,#1f0707 40%,#150505 100%);
-    }
-    .right-bg::before {
-      content:''; position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(201,164,83,0.04) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(201,164,83,0.04) 1px,transparent 1px);
-      background-size:48px 48px;
-    }
-
-    .particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
-    .particle {
-      position:absolute; border-radius:50%;
-      background:radial-gradient(circle,rgba(201,164,83,0.6),transparent);
-      animation:particleDrift linear infinite;
-      opacity:0;
-    }
-    @keyframes particleDrift {
-      0%   { transform:translateY(100%) translateX(0); opacity:0; }
-      10%  { opacity:1; }
-      90%  { opacity:0.6; }
-      100% { transform:translateY(-20vh) translateX(var(--dx)); opacity:0; }
-    }
-
-    .mouse-glow {
-      position:absolute; pointer-events:none;
-      width:300px; height:300px; border-radius:50%;
-      background:radial-gradient(circle,rgba(176,32,48,0.12) 0%,transparent 70%);
-      transform:translate(-50%,-50%);
-      transition:left 0.12s ease, top 0.12s ease;
-      z-index:1;
-    }
-
-    .rings { position:absolute; inset:0; pointer-events:none; }
-    .ring {
-      position:absolute; border-radius:50%;
-      border:1px solid rgba(145, 101, 6, 0.521);
-    }
-    .ring-1 {
-      width:540px;height:540px;
-      bottom:2%;right:8%;
-      border-style:dashed;
-      animation:ringRotate 60s linear infinite;
-    }
-    .ring-2 {
-      width:485px;height:485px;
-      bottom:5%;right:11%;
-      border-style:dashed;
-      animation:ringRotate 60s linear reverse infinite;
-    }
-    @keyframes ringRotate {
-      from { transform:rotate(0); }
-      to   { transform:rotate(360deg); }
-    }
-
-    .compass {
-      position:absolute; top:40px; right:40px;
-      width:70px; height:70px;
-      opacity:0.2;
-      animation:ringRotate 20s linear infinite;
-    }
-    .compass svg { width:100%; height:100%; }
-
-    .red-stripe {
-      position:absolute; bottom:0;left:0;
-      width:3px;height:40%;
-      background:linear-gradient(to top,var(--red),transparent);
-      opacity:0.7;
-    }
-
-    .character {
-      position:absolute; bottom:0; right:3%;
-      height:93%; object-fit:contain; object-position:bottom center;
-      filter:drop-shadow(-10px 0 40px rgba(176,32,48,0.35));
-      animation:charIn 1s cubic-bezier(.22,.68,0,1.3) 0.2s both;
-      z-index:2;
-      transition:filter 0.5s ease;
-    }
-    .character:hover {
-      filter:drop-shadow(-10px 0 30px rgba(201, 164, 83, 0.226)) brightness(1.02);
-    }
-    @keyframes charIn {
-      from { opacity:0; transform:translateX(40px) scale(0.97); }
-      to   { opacity:1; transform:translateX(0) scale(1); }
-    }
-
-    .badge {
-      position:absolute; top:36px;left:40px;
-      display:flex; align-items:center; gap:8px;
-      font-family:'Cinzel',serif; font-size:0.7rem;
-      letter-spacing:0.18em; color:var(--gold); text-transform:uppercase;
-    }
-    .badge::before {
-      content:''; width:24px;height:1px;
-      background:var(--gold); opacity:0.6;
-    }
-
-    .caption {
-      position:absolute; bottom:32px;left:40px;
-      font-size:0.72rem; color:rgba(201,164,83,0.5);
-      letter-spacing:0.2em; text-transform:uppercase;
-      font-family:'Cinzel',serif;
-    }
-
-    .slash-deco {
-      position:absolute; top:0;left:0;right:0;bottom:0;
-      pointer-events:none; overflow:hidden; z-index:0;
-    }
-    .slash-deco::after {
-      content:'';
-      position:absolute;
-      top:-20%;left:-10%;
-      width:60%;height:140%;
-      background:linear-gradient(105deg,
-        transparent 0%,
-        transparent 48%,
-        rgba(176,32,48,0.07) 50%,
-        transparent 52%,
-        transparent 100%);
-      animation:slashPulse 6s ease-in-out infinite;
-    }
-    @keyframes slashPulse {
-      0%,100% { opacity:0.5; transform:skewX(-2deg); }
-      50% { opacity:1; transform:skewX(2deg); }
-    }
-  </style>
 </head>
 <body>
-
-<div class="toast" id="toast"></div>
-
-<div class="modal-overlay" id="signinModal">
-  <div class="modal">
-    <button class="modal-close" id="modalClose">✕</button>
-    <h2>⚓ Set Sail Again</h2>
-    <p class="modal-sub">
-      Welcome back, Pirate.<br>
-      Access thy <a href="#">crew log</a> &amp; <a href="#">treasure chart</a>
-    </p>
-    <div class="field">
-      <span class="field-icon">⚔</span>
-      <input type="email" id="si-email" placeholder="Yer email address"/>
-      <span class="err-msg" id="si-email-err">A valid address, scallywag!</span>
-    </div>
-    <div class="field">
-      <span class="field-icon">🔐</span>
-      <input type="password" id="si-pass" placeholder="Yer secret passphrase"/>
-      <span class="err-msg" id="si-pass-err">The passphrase be required!</span>
-    </div>
-    <button class="btn-submit" id="signinBtn" style="margin-top:14px;">
-      <span class="btn-text">⚓ Board the Ship</span>
-      <div class="spinner"></div>
-    </button>
-    <p style="text-align:center;margin-top:14px;font-size:0.78rem;color:var(--white-dim);">
-      <a href="#" style="color:var(--gold)">Forgot yer passphrase?</a>
-    </p>
-  </div>
-</div>
-
-<div class="page">
-
-  <div class="left">
-    <div class="logo"><span>O</span>takore</div>
-
-    <div class="form-wrap">
-      <h1 class="heading">Join the Crew</h1>
-      <p class="heading-sub">☠ Raise Yer Flag & Sail ☠</p>
-      <p class="subtext">
-        By enlisting, ye agree to Otakore's<br>
-        <a href="#">Articles of Agreement</a> &amp; <a href="#">Code of the Sea</a>
+  <div class="toast" id="toast"></div>
+  <div class="modal-overlay" id="signinModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h2>⚓ Set Sail Again</h2>
+      <p class="modal-sub">
+        Welcome back, Pirate.<br>
+        Access thy <a href="#">crew log</a> &amp; <a href="#">treasure chart</a>
       </p>
-
-      <button class="btn-google" id="googleBtn">
-        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.2 30.3 0 24 0 14.8 0 6.9 5.4 3 13.3l7.9 6.1C12.9 13.4 18 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 6.9-10.1 6.9-17z"/>
-          <path fill="#FBBC05" d="M10.9 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.1.7-4.6L2.3 13.3A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8.4-6z"/>
-          <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2.1 1.4-4.7 2.3-7.7 2.3-6 0-11.1-4-12.9-9.4l-8 6.1C6.8 42.5 14.8 48 24 48z"/>
-        </svg>
-        Sail in with Google
-      </button>
-
-      <div class="divider">or sign the manifest</div>
-
-      <div class="field" id="f-email">
-        <input type="email" id="reg-email" placeholder="Yer email address"/>
-        <span class="err-msg">A real email, ye scallywag!</span>
+      <div class="field">
+        <span class="field-icon">⚔</span>
+        <input type="email" id="si-email" placeholder="Yer email address"/>
+        <span class="err-msg" id="si-email-err">A valid address, scallywag!</span>
       </div>
-      <div class="field" id="f-user">
-        <input type="text" id="reg-user" placeholder="Yer pirate name"/>
-        <span class="err-msg">Every pirate needs a name!</span>
+      <div class="field">
+        <span class="field-icon">🔐</span>
+        <input type="password" id="si-pass" placeholder="Yer secret passphrase"/>
+        <span class="err-msg" id="si-pass-err">The passphrase be required!</span>
       </div>
-      <div class="field show-strength" id="f-pass">
-        <input type="password" id="reg-pass" placeholder="Yer secret passphrase"/>
-        <span class="err-msg">At least 8 characters, landlubber!</span>
-        <div class="strength-wrap">
-          <div class="strength-bar"><div class="strength-bar-fill" id="strength-fill"></div></div>
-          <span class="strength-label" id="strength-label"></span>
-        </div>
-      </div>
-      <div class="field" id="f-confirm">
-        <input type="password" id="reg-confirm" placeholder="Confirm yer passphrase"/>
-        <span class="err-msg">The passphrases don't match, scallywag!</span>
-      </div>
-
-      <button class="btn-submit" id="signupBtn">
-        <span class="btn-text">⚓ Enlist in the Crew</span>
+      <button class="btn-submit" id="signinBtn" style="margin-top:14px;">
+        <span class="btn-text">⚓ Board the Ship</span>
         <div class="spinner"></div>
       </button>
+      <p style="text-align:center;margin-top:14px;font-size:0.78rem;color:var(--white-dim);">
+        <a href="#" style="color:var(--gold)">Forgot yer passphrase?</a>
+      </p>
     </div>
   </div>
 
-  <div class="right" id="rightPanel">
-    <div class="right-bg"></div>
-    <div class="slash-deco"></div>
-    <div class="mouse-glow" id="mouseGlow"></div>
-    <div class="rings">
-      <div class="ring ring-1"></div>
-      <div class="ring ring-2"></div>
-      <div class="ring ring-3"></div>
+  <div class="page">
+
+    <div class="left">
+      <div class="logo"><span>O</span>takore</div>
+
+      <div class="form-wrap">
+        <h1 class="heading">Join the Crew</h1>
+        <p class="heading-sub">☠ Raise Yer Flag & Sail ☠</p>
+        <p class="subtext">
+          By enlisting, ye agree to Otakore's<br>
+          <a href="#">Articles of Agreement</a> &amp; <a href="#">Code of the Sea</a>
+        </p>
+
+        <button class="btn-google" id="googleBtn">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.2 30.3 0 24 0 14.8 0 6.9 5.4 3 13.3l7.9 6.1C12.9 13.4 18 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 6.9-10.1 6.9-17z"/>
+            <path fill="#FBBC05" d="M10.9 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.1.7-4.6L2.3 13.3A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8.4-6z"/>
+            <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2.1 1.4-4.7 2.3-7.7 2.3-6 0-11.1-4-12.9-9.4l-8 6.1C6.8 42.5 14.8 48 24 48z"/>
+          </svg>
+          Sail in with Google
+        </button>
+
+        <div class="divider">or sign the manifest</div>
+
+        <div class="field" id="f-email">
+          <input type="email" id="reg-email" placeholder="Yer email address"/>
+          <span class="err-msg">A real email, ye scallywag!</span>
+        </div>
+        <div class="field" id="f-user">
+          <input type="text" id="reg-user" placeholder="Yer pirate name"/>
+          <span class="err-msg">Every pirate needs a name!</span>
+        </div>
+        <div class="field show-strength" id="f-pass">
+          <input type="password" id="reg-pass" placeholder="Yer secret passphrase"/>
+          <span class="err-msg">At least 8 characters, landlubber!</span>
+          <div class="strength-wrap">
+            <div class="strength-bar"><div class="strength-bar-fill" id="strength-fill"></div></div>
+            <span class="strength-label" id="strength-label"></span>
+          </div>
+        </div>
+        <div class="field" id="f-confirm">
+          <input type="password" id="reg-confirm" placeholder="Confirm yer passphrase"/>
+          <span class="err-msg">The passphrases don't match, scallywag!</span>
+        </div>
+
+        <button class="btn-submit" id="signupBtn">
+          <span class="btn-text">⚓ Enlist in the Crew</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
     </div>
-    <div class="particles" id="particles"></div>
-    <div class="red-stripe"></div>
-    <div class="badge">⚓ Captain</div>
-    <div class="caption">Jolly Roger Fleet · Vessel No. 01</div>
-    <div class="compass">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="48" fill="none" stroke="#c9a453" stroke-width="1"/>
-        <line x1="50" y1="4" x2="50" y2="96" stroke="#c9a453" stroke-width="0.8" stroke-dasharray="4,4"/>
-        <line x1="4" y1="50" x2="96" y2="50" stroke="#c9a453" stroke-width="0.8" stroke-dasharray="4,4"/>
-        <polygon points="50,10 45,50 50,40 55,50" fill="#c9a453"/>
-        <polygon points="50,90 45,50 50,60 55,50" fill="#c9a45380"/>
-        <circle cx="50" cy="50" r="4" fill="#c9a453"/>
-        <text x="50" y="20" text-anchor="middle" fill="#c9a453" font-size="8" font-family="serif">N</text>
-      </svg>
+
+    <div class="right" id="rightPanel">
+      <div class="right-bg"></div>
+      <div class="slash-deco"></div>
+      <div class="mouse-glow" id="mouseGlow"></div>
+      <div class="rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="particles" id="particles"></div>
+      <div class="red-stripe"></div>
+      <div class="badge">⚓ Captain</div>
+      <div class="caption">Jolly Roger Fleet · Vessel No. 01</div>
+      <div class="compass">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="#c9a453" stroke-width="1"/>
+          <line x1="50" y1="4" x2="50" y2="96" stroke="#c9a453" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <line x1="4" y1="50" x2="96" y2="50" stroke="#c9a453" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <polygon points="50,10 45,50 50,40 55,50" fill="#c9a453"/>
+          <polygon points="50,90 45,50 50,60 55,50" fill="#c9a45380"/>
+          <circle cx="50" cy="50" r="4" fill="#c9a453"/>
+          <text x="50" y="20" text-anchor="middle" fill="#c9a453" font-size="8" font-family="serif">N</text>
+        </svg>
+      </div>
+
+      <img class="character" src="./kaishi_pict.png" alt="Captain"/>
     </div>
 
-    <img class="character" src="./kaishi_pict.png" alt="Captain"/>
+    <div class="topbar-right">
+      Already a Pirate? <a href="#" id="openSignin">⚓ Sign In</a>
+    </div>
   </div>
-
-  <div class="topbar-right">
-    Already a Pirate? <a href="#" id="openSignin">⚓ Sign In</a>
-  </div>
-</div>
-
-<script>
-(function spawnParticles() {
-  const container = document.getElementById('particles');
-  for (let i = 0; i < 28; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 5 + 2;
-    const left = Math.random() * 100;
-    const dur  = Math.random() * 14 + 8;
-    const delay= Math.random() * 12;
-    const dx   = (Math.random() - 0.5) * 120;
-    p.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${left}%; bottom:0;
-      --dx:${dx}px;
-      animation-duration:${dur}s;
-      animation-delay:-${delay}s;
-    `;
-    container.appendChild(p);
-  }
-})();
-
-const glow = document.getElementById('mouseGlow');
-const rightPanel = document.getElementById('rightPanel');
-rightPanel.addEventListener('mousemove', (e) => {
-  const rect = rightPanel.getBoundingClientRect();
-  glow.style.left = (e.clientX - rect.left) + 'px';
-  glow.style.top  = (e.clientY - rect.top) + 'px';
-});
-
-let toastTimer;
-function showToast(msg, type='info') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + (type==='error'?'error':type==='success'?'success':'');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.className='toast', 3000);
-}
-
-const modal = document.getElementById('signinModal');
-document.getElementById('openSignin').addEventListener('click', (e) => {
-  e.preventDefault();
-  modal.classList.add('active');
-});
-document.getElementById('modalClose').addEventListener('click', () => {
-  modal.classList.remove('active');
-});
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) modal.classList.remove('active');
-});
-
-function setError(field, show) {
-  field.classList.toggle('has-error', show);
-  field.classList.toggle('valid', !show && field.querySelector('input').value !== '');
-}
-function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-const passInput    = document.getElementById('reg-pass');
-const strengthFill = document.getElementById('strength-fill');
-const strengthLbl  = document.getElementById('strength-label');
-
-passInput.addEventListener('input', () => {
-  const v = passInput.value;
-  let score = 0;
-  if (v.length >= 8)  score++;
-  if (/[A-Z]/.test(v)) score++;
-  if (/[0-9]/.test(v)) score++;
-  if (/[^A-Za-z0-9]/.test(v)) score++;
-
-  const labels = ['','Weak — barely seaworthy!','Decent — sails at half-mast','Strong — ready to plunder!','Unbreakable — Davy Jones weeps!'];
-  const colors  = ['','#e03040','#e8a030','#4caf90','#c9a453'];
-  const pcts    = [0, 25, 50, 75, 100];
-
-  strengthFill.style.width      = pcts[score] + '%';
-  strengthFill.style.background = colors[score] || '#e03040';
-  strengthLbl.textContent       = labels[score] || '';
-});
-
-document.getElementById('signupBtn').addEventListener('click', async () => {
-  const email   = document.getElementById('reg-email');
-  const user    = document.getElementById('reg-user');
-  const pass    = document.getElementById('reg-pass');
-  const confirm = document.getElementById('reg-confirm');
-  const fEmail  = document.getElementById('f-email');
-  const fUser   = document.getElementById('f-user');
-  const fPass   = document.getElementById('f-pass');
-  const fConf   = document.getElementById('f-confirm');
-
-  const emailOk   = validateEmail(email.value.trim());
-  const userOk    = user.value.trim().length >= 3;
-  const passOk    = pass.value.length >= 8;
-  const confirmOk = confirm.value === pass.value && confirm.value !== '';
-
-  setError(fEmail, !emailOk);
-  setError(fUser, !userOk);
-  setError(fPass, !passOk);
-  setError(fConf, !confirmOk);
-
-  if (!emailOk || !userOk || !passOk || !confirmOk) {
-    showToast('⚔ Fix yer errors, landlubber!', 'error');
-    return;
-  }
-
-  const btn = document.getElementById('signupBtn');
-  btn.classList.add('loading');
-  showToast('⚓ Rallying the crew...', 'info');
-
-  await new Promise(r => setTimeout(r, 2000));
-  btn.classList.remove('loading');
-  showToast('🏴‍☠️ Welcome aboard, ' + user.value.trim() + '! The seas await!', 'success');
-});
-
-document.getElementById('signinBtn').addEventListener('click', async () => {
-  const email = document.getElementById('si-email');
-  const pass  = document.getElementById('si-pass');
-  const fEmail= email.closest('.field');
-  const fPass = pass.closest('.field');
-
-  const emailOk = validateEmail(email.value.trim());
-  const passOk  = pass.value.length > 0;
-
-  setError(fEmail, !emailOk);
-  setError(fPass, !passOk);
-  document.getElementById('si-email-err').style.display = emailOk ? 'none' : 'block';
-  document.getElementById('si-pass-err').style.display  = passOk  ? 'none' : 'block';
-
-  if (!emailOk || !passOk) {
-    showToast('⚔ Check yer manifest again!', 'error');
-    return;
-  }
-
-  const btn = document.getElementById('signinBtn');
-  btn.classList.add('loading');
-
-  await new Promise(r => setTimeout(r, 1800));
-  btn.classList.remove('loading');
-  modal.classList.remove('active');
-  showToast('⚓ Ahoy! Welcome back, pirate!', 'success');
-});
-
-document.getElementById('googleBtn').addEventListener('click', () => {
-  showToast('🏴‍☠️ Seekin\' Google\'s blessing...', 'info');
-});
-
-document.querySelectorAll('.btn-submit, .btn-google').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    if (this.classList.contains('loading')) return;
-    const circle = document.createElement('span');
-    const d = Math.max(this.offsetWidth, this.offsetHeight);
-    const rect = this.getBoundingClientRect();
-    circle.style.cssText = `
-      position:absolute; border-radius:50%; pointer-events:none;
-      width:${d}px; height:${d}px;
-      left:${e.clientX-rect.left-d/2}px;
-      top:${e.clientY-rect.top-d/2}px;
-      background:rgba(255,255,255,0.15);
-      transform:scale(0); animation:ripple 0.55s linear;
-    `;
-    this.appendChild(circle);
-    circle.addEventListener('animationend', () => circle.remove());
-  });
-});
-
-const st = document.createElement('style');
-st.textContent = '@keyframes ripple{to{transform:scale(3);opacity:0;}}';
-document.head.appendChild(st);
-
-document.getElementById('reg-email').addEventListener('blur', function() {
-  setError(document.getElementById('f-email'), !validateEmail(this.value.trim()));
-});
-document.getElementById('reg-user').addEventListener('blur', function() {
-  setError(document.getElementById('f-user'), this.value.trim().length < 3);
-});
-document.getElementById('reg-pass').addEventListener('blur', function() {
-  setError(document.getElementById('f-pass'), this.value.length < 8);
-});
-document.getElementById('reg-confirm').addEventListener('input', function() {
-  const p = document.getElementById('reg-pass').value;
-  setError(document.getElementById('f-confirm'), this.value !== p || this.value === '');
-});
-</script>
+  <script src="./script.js"></script>
 </body>
 </html>
