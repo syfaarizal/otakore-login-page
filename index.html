@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Otakore — Join the Crew</title>
+
+  <!-- FONTS — swap Google Fonts link here -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet"/>
+
   <link rel="stylesheet" href="./css/style.css"/>
   <link rel="stylesheet" href="./css/responsive.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet"/>
 </head>
 <body>
+
+  <!-- Toast notification -->
   <div class="toast" id="toast"></div>
+
+  <!-- Modal: Sign In -->
   <div class="modal-overlay" id="signinModal">
     <div class="modal">
       <button class="modal-close" id="modalClose">✕</button>
@@ -20,32 +27,34 @@
       </p>
       <div class="field">
         <span class="field-icon">⚔</span>
-        <input type="email" id="si-email" placeholder="Yer email address"/>
+        <input type="email" id="si-email" placeholder="Yer email address" autocomplete="email"/>
         <span class="err-msg" id="si-email-err">A valid address, scallywag!</span>
       </div>
       <div class="field">
         <span class="field-icon">🔐</span>
-        <input type="password" id="si-pass" placeholder="Yer secret passphrase"/>
+        <input type="password" id="si-pass" placeholder="Yer secret passphrase" autocomplete="current-password"/>
         <span class="err-msg" id="si-pass-err">The passphrase be required!</span>
       </div>
       <button class="btn-submit" id="signinBtn" style="margin-top:14px;">
         <span class="btn-text">⚓ Board the Ship</span>
         <div class="spinner"></div>
       </button>
-      <p style="text-align:center;margin-top:14px;font-size:0.78rem;color:var(--white-dim);">
-        <a href="#" style="color:var(--gold)">Forgot yer passphrase?</a>
+      <p class="modal-footer-link">
+        <a href="#">Forgot yer passphrase?</a>
       </p>
     </div>
   </div>
 
+  <!-- Page layout -->
   <div class="page">
 
+    <!-- Left: Form panel -->
     <div class="left">
       <div class="logo"><span>O</span>takore</div>
 
       <div class="form-wrap">
         <h1 class="heading">Join the Crew</h1>
-        <p class="heading-sub">☠ Raise Yer Flag & Sail ☠</p>
+        <p class="heading-sub">☠ Raise Yer Flag &amp; Sail ☠</p>
         <p class="subtext">
           By enlisting, ye agree to Otakore's<br>
           <a href="#">Articles of Agreement</a> &amp; <a href="#">Code of the Sea</a>
@@ -64,23 +73,25 @@
         <div class="divider">or sign the manifest</div>
 
         <div class="field" id="f-email">
-          <input type="email" id="reg-email" placeholder="Yer email address"/>
+          <input type="email" id="reg-email" placeholder="Yer email address" autocomplete="email"/>
           <span class="err-msg">A real email, ye scallywag!</span>
         </div>
         <div class="field" id="f-user">
-          <input type="text" id="reg-user" placeholder="Yer pirate name"/>
+          <input type="text" id="reg-user" placeholder="Yer pirate name" autocomplete="username"/>
           <span class="err-msg">Every pirate needs a name!</span>
         </div>
         <div class="field show-strength" id="f-pass">
-          <input type="password" id="reg-pass" placeholder="Yer secret passphrase"/>
+          <input type="password" id="reg-pass" placeholder="Yer secret passphrase" autocomplete="new-password"/>
           <span class="err-msg">At least 8 characters, landlubber!</span>
           <div class="strength-wrap">
-            <div class="strength-bar"><div class="strength-bar-fill" id="strength-fill"></div></div>
+            <div class="strength-bar">
+              <div class="strength-bar-fill" id="strength-fill"></div>
+            </div>
             <span class="strength-label" id="strength-label"></span>
           </div>
         </div>
         <div class="field" id="f-confirm">
-          <input type="password" id="reg-confirm" placeholder="Confirm yer passphrase"/>
+          <input type="password" id="reg-confirm" placeholder="Confirm yer passphrase" autocomplete="new-password"/>
           <span class="err-msg">The passphrases don't match, scallywag!</span>
         </div>
 
@@ -91,6 +102,7 @@
       </div>
     </div>
 
+    <!-- Right: Visual / character panel -->
     <div class="right" id="rightPanel">
       <div class="right-bg"></div>
       <div class="slash-deco"></div>
@@ -100,7 +112,10 @@
         <div class="ring ring-2"></div>
         <div class="ring ring-3"></div>
       </div>
+
+      <!-- Particle background container -->
       <div class="particles" id="particles"></div>
+
       <div class="red-stripe"></div>
       <div class="badge">⚓ Captain</div>
       <div class="caption">Jolly Roger Fleet · Vessel No. 01</div>
@@ -116,13 +131,17 @@
         </svg>
       </div>
 
+      <!-- CHARACTER IMAGE — replace src with your own image path -->
       <img class="character" src="./assets/kaishi_pict.png" alt="Captain"/>
     </div>
 
+    <!-- Top-right sign in link -->
     <div class="topbar-right">
       Already a Pirate? <a href="#" id="openSignin">⚓ Sign In</a>
     </div>
+
   </div>
+
   <script src="./js/script.js"></script>
 </body>
 </html>
